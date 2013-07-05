@@ -58,7 +58,7 @@ var game = {
                 "name": value,
                 "type": "image",
                 "src": "data/img/sprite/" + value + ".png"
-            })
+            });
         });
 
         //Tilesets
@@ -67,7 +67,7 @@ var game = {
                 "name": value,
                 "type": "image",
                 "src": "data/img/tileset/" + value + ".png"
-            })
+            });
         });
 
         //Gui
@@ -76,7 +76,7 @@ var game = {
                 "name": value,
                 "type": "image",
                 "src": "data/img/gui/" + value + ".png"
-            })
+            });
         });
 
         //Other
@@ -85,7 +85,7 @@ var game = {
                 "name": value,
                 "type": "image",
                 "src": "data/img/other/" + value + ".png"
-            })
+            });
         });
 
         // Maps.
@@ -94,7 +94,7 @@ var game = {
                 "name": value,
                 "type": "tmx",
                 "src": "data/map/" + value + ".tmx"
-            })
+            });
         });
 
         // Sound effects.
@@ -104,7 +104,7 @@ var game = {
                 "type": "audio",
                 "src": "data/sfx/",
                 "channel": 1
-            })
+            });
         });
 
         // Music.
@@ -114,7 +114,7 @@ var game = {
                 "type": "audio",
                 "src": "data/bgm/",
                 "channel": 2
-            })
+            });
         });
 
         // Load the resources.
@@ -137,6 +137,10 @@ var game = {
             };*/
             
         //this.r_text = this.changeEnemy(this.r_text);     //muss iwie wenn Level lädt immer nue gesetzt werden
+        
+        me.game.onLevelLoaded = this.changeEnemy.bind(this);
+        //this.actualEnemy = this.changeEnemy();
+        console.warn(this.actualEnemy);
 
         //Player Entity
         me.entityPool.add("mainPlayer", game.playerEntity);
@@ -145,7 +149,7 @@ var game = {
         me.entityPool.add("Princess", game.npcCharacter.Princess);
         me.entityPool.add("Dummy", game.npcCharacter.Dummy);
         //Forest Layout
-        me.entityPool.add("EnemyEntity", game.npcCharacter.Ghost); 
+        me.entityPool.add("EnemyEntity", this.actualEnemy); 
         
         //me.entityPool.add("Ghost", game.npcCharacter.Dummy);
         //var ghost = me.entityPool.newInstanceOf("Ghost", x, y, settings);
@@ -178,7 +182,7 @@ var game = {
     //Call on LevelLoaded        
     "changeEnemy" : function changeEnemy(){
         //this.enemyArray =  enemyArray;
-        var enemyArray = this.enemyArray;
+        enemyArray = this.enemyArray;
         enemyArray[0] = game.npcCharacter.Eyeball;
         enemyArray[1] = game.npcCharacter.Ghost;
         enemyArray[2] = "I've been for a walk";
@@ -189,7 +193,7 @@ var game = {
         
 
         var i = Math.floor(2 * Math.random());
-        console.warn(enemyArray[i]);
+        //console.warn(enemyArray[i]);
         //this.enemyString = enemyArray[i];        
         //console.warn(this.enemyString);
         return enemyArray[i];        
