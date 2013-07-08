@@ -6,7 +6,8 @@ game.playerEntity = me.ObjectEntity.extend({
      
      constructor
      
-     ------ */    
+     ------ */
+    "health": 50,
     "init": function(x, y, settings) {
         settings.image = "Human_SpriteBig";  //vor Constructorcall
         settings.spritewidth = 64;
@@ -40,7 +41,7 @@ game.playerEntity = me.ObjectEntity.extend({
         this.renderable.addAnimation("leftSword", [24, 25, 26, 27, 28, 29]);
         this.renderable.addAnimation("downSword", [39, 40, 41, 42, 43, 44]);
         this.renderable.addAnimation("rightSword", [54, 55, 56, 57, 58, 59]);
-                
+
         // Variablen
         //Keys
         this.actionPressed = false;
@@ -48,8 +49,8 @@ game.playerEntity = me.ObjectEntity.extend({
         this.cPressed = false;
 
         //Hud Werte
-        this.health = 50;
-        this.score = 0;        
+        //this.health = 50;
+        this.score = 0;
 
         //ausrichtung
         this.upFacing = true;
@@ -57,7 +58,6 @@ game.playerEntity = me.ObjectEntity.extend({
         this.rightFacing = false;
         this.leftFacing = false;
     },
-            
     /* -----
      
      update the player pos
@@ -107,7 +107,7 @@ game.playerEntity = me.ObjectEntity.extend({
             this.rightFacing = false;
             this.leftFacing = false;
             return true;
-        }        
+        }
         // else inform the engine we did not perform
         // any update (e.g. position, animation)
         return false;
@@ -116,7 +116,7 @@ game.playerEntity = me.ObjectEntity.extend({
      
      KeyInput
      
-     ------ */        
+     ------ */
     "checkInput": function checkInput() {
         //Bewegung
         if (me.input.isKeyPressed('left')) {
@@ -156,9 +156,9 @@ game.playerEntity = me.ObjectEntity.extend({
         } else if (me.input.isKeyPressed('C')) {
             this.cPressed = true;
         }
-        
+
         //Update Bounding Box bei xClick
-        if(this.xPressed){// adjust the bounding box
+        if (this.xPressed) {// adjust the bounding box
             this.updateColRect(0, 64, 0, 64);
         } else {// adjust the bounding box
             this.updateColRect(16, 32, 10, 48);
@@ -170,46 +170,46 @@ game.playerEntity = me.ObjectEntity.extend({
      
      Attack
      
-     ------ */        
-    "swordAttack": function swordAttack(){
+     ------ */
+    "swordAttack": function swordAttack() {
         //Angriff
         if (this.rightFacing === true) {
             this.renderable.setCurrentAnimation("rightSword");
-            for(var i = this.renderable.getCurrentAnimationFrame(); i < 6; i++){
+            for (var i = this.renderable.getCurrentAnimationFrame(); i < 6; i++) {
                 this.parent();
             }
         } else if (this.leftFacing === true) {
             this.renderable.setCurrentAnimation("leftSword");
-            for(var i = this.renderable.getCurrentAnimationFrame(); i < 6; i++){
+            for (var i = this.renderable.getCurrentAnimationFrame(); i < 6; i++) {
                 this.parent();
             }
         } else if (this.upFacing === true) {
             this.renderable.setCurrentAnimation("upSword");
-            for(var i = this.renderable.getCurrentAnimationFrame(); i < 6; i++){
+            for (var i = this.renderable.getCurrentAnimationFrame(); i < 6; i++) {
                 this.parent();
             }
         } else if (this.downFacing === true) {
             this.renderable.setCurrentAnimation("downSword");
-            for(var i = this.renderable.getCurrentAnimationFrame(); i < 6; i++){
+            for (var i = this.renderable.getCurrentAnimationFrame(); i < 6; i++) {
                 this.parent();
             }
-        }        
-        
+        }
+
     },
     /* -----
      
      Collision Handling
      
-     ------ */        
+     ------ */
     "checkCollision": function checkCollision() {
         // check for collision
         var res = me.game.collide(this);
-        
+
         if (res) {
             // if we collide with an enemy
             if (res.obj.type === me.game.ENEMY_OBJECT) {
                 if (this.xPressed) {
-                    console.warn("attacked");                    
+                    console.warn("attacked");
                     me.game.remove(res.obj);
                 } else {
                     this.renderable.flicker(30);
@@ -219,6 +219,15 @@ game.playerEntity = me.ObjectEntity.extend({
                 }
             }
         }
+    },
+    /* -----
+     
+     Player Hitted
+     
+     ------ */
+    "hit": function hit(power) {
+        this.health -= power;
     }
+
 
 });

@@ -14,13 +14,8 @@ var game = {
     "modal": false,
     // `true` when an object's y-coordinate changes to put it at the proper Z-order.
     "wantsResort": false,
-    //Enemy Array
-    "enemyArray": new Array(),
-    "enemyString": new Object(),
-    "actualEnemy": null,
-    // Run on page load.
-    
-    "onload": function() {        
+    // Run on page load.    
+    "onload": function() {
         // Initialize the video.
         if (!me.video.init("screen", c.WIDTH, c.HEIGHT)) {
             alert("Your browser does not support HTML5 canvas.");
@@ -32,7 +27,7 @@ var game = {
             window.onReady(function() {
                 me.plugin.register.defer(debugPanel, "debug");
             });
-        }        
+        }
 
         // Initialize the audio.
         me.audio.init("mp3,ogg");
@@ -44,9 +39,8 @@ var game = {
         this.loadResources();
 
         // Initialize melonJS and display a loading screen.
-        me.state.change(me.state.LOADING);        
+        me.state.change(me.state.LOADING);
     },
-            
     "loadResources": function loadResources() {
         // Set all resources to be loaded.
         var resources = [];
@@ -120,27 +114,10 @@ var game = {
         // Load the resources.
         me.loader.preload(resources);
     },
-            
     // Run on game resources loaded.
     "loaded": function() {
         me.state.set(me.state.MENU, new game.TitleScreen());
-        me.state.set(me.state.PLAY, new game.PlayScreen());        
-        
-        //me.game.onLevelLoaded = this.changeEnemy.bind(this);
-        
-        /*/ When level loads, start music and move Rachel to the proper location.
-            me.game.onLevelLoaded = function onLevelLoaded() {
-                //self.onLevelLoaded(settings);
-                var r_text = new Array();
-                r_text = this.r_text
-                this.r_text = this.changeEnemy();
-            };*/
-            
-        //this.r_text = this.changeEnemy(this.r_text);     //muss iwie wenn Level lädt immer nue gesetzt werden
-        
-        me.game.onLevelLoaded = this.changeEnemy.bind(this);
-        //this.actualEnemy = this.changeEnemy();
-        console.warn(this.actualEnemy);
+        me.state.set(me.state.PLAY, new game.PlayScreen());
 
         //Player Entity
         me.entityPool.add("mainPlayer", game.playerEntity);
@@ -148,9 +125,14 @@ var game = {
         //First Room
         me.entityPool.add("Princess", game.npcCharacter.Princess);
         me.entityPool.add("Dummy", game.npcCharacter.Dummy);
-        //Forest Layout
-        me.entityPool.add("EnemyEntity", this.actualEnemy); 
         
+        //Forest Layout
+        //Rnd Enemy onLevelLoaded
+        //me.entityPool.add("EnemyEntity", this.changeEnemy()); ----> unnötig
+        me.game.onLevelLoaded = (function() {
+            me.entityPool.add("EnemyEntity", this.changeEnemy());
+        }).bind(this);
+
         //me.entityPool.add("Ghost", game.npcCharacter.Dummy);
         //var ghost = me.entityPool.newInstanceOf("Ghost", x, y, settings);
         //me.game.add(ghost);
@@ -178,24 +160,13 @@ var game = {
         // Start the game.
         me.state.change(me.state.PLAY);
     },
-    
-    //Call on LevelLoaded        
-    "changeEnemy" : function changeEnemy(){
-        //this.enemyArray =  enemyArray;
-        enemyArray = this.enemyArray;
-        enemyArray[0] = game.npcCharacter.Eyeball;
-        enemyArray[1] = game.npcCharacter.Ghost;
-        enemyArray[2] = "I've been for a walk";
-        enemyArray[3] = "On a winter's day";
-        enemyArray[4] = "I'd be safe and warm";
-        enemyArray[5] = "If I was in L.A.";
-        enemyArray[6] = "California dreaming, On such a winter's day";
-        
-
-        var i = Math.floor(2 * Math.random());
-        //console.warn(enemyArray[i]);
-        //this.enemyString = enemyArray[i];        
-        //console.warn(this.enemyString);
-        return enemyArray[i];        
+    //Rnd Enemys call onLevelLoaded       
+    "changeEnemy": function changeEnemy() {
+        var enemyArray = [
+            game.npcCharacter.Eyeball,
+            game.npcCharacter.Ghost
+        ];
+        console.warn(this.actualEnemy);
+        return enemyArray[Math.floor(Math.random() * enemyArray.length)];        
     }
 };
