@@ -1,5 +1,9 @@
 game.resources = {
-    /* Graphics. */
+/*------------------- 
+ 
+Graphics
+
+ -------------------------------- */
     //Sprites
     "sprite" : [
         "Human_ThrustStaff",
@@ -27,12 +31,21 @@ game.resources = {
         "32x32_font",
     ],     
                
-    /* Maps from Tiled. */
+/*------------------- 
+ 
+Maps
+
+ -------------------------------- */
     "map" : [
       "startRoom",
       "ForestRoomLayout",
     ],
 
+/*------------------- 
+ 
+Sound
+
+ -------------------------------- */
     /* 1-channel audio. Usually sound effects. */
     "sfx" : [
     ],

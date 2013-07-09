@@ -57,6 +57,7 @@ game.npcCharacter = {
      
      ------ */
     "Eyeball": game.npcEntity.extend({
+        "power": 5,
         "init": function init(x, y, settings) {
             //Settings
             settings.image = "eyeball";
@@ -104,6 +105,7 @@ game.npcCharacter = {
      
      ------ */
     "Ghost": game.npcEntity.extend({
+        "power": 10,
         "init": function init(x, y, settings) {
             //Settings
             settings.image = "ghost";

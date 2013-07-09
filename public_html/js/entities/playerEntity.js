@@ -1,12 +1,14 @@
 /*------------------- 
+ 
  a player entity
+
  -------------------------------- */
 game.playerEntity = me.ObjectEntity.extend({
-    /* -----
-     
-     constructor
-     
-     ------ */
+/*------------------- 
+ 
+Init Constructor
+
+ -------------------------------- */
     "health": 50,
     "init": function(x, y, settings) {
         settings.image = "Human_SpriteBig";  //vor Constructorcall
@@ -58,11 +60,11 @@ game.playerEntity = me.ObjectEntity.extend({
         this.rightFacing = false;
         this.leftFacing = false;
     },
-    /* -----
-     
-     update the player pos
-     
-     ------ */
+/*------------------- 
+ 
+Update Player Pos
+
+ -------------------------------- */
     "update": function() {
         //KeyEingaben
         this.checkInput();
@@ -70,11 +72,9 @@ game.playerEntity = me.ObjectEntity.extend({
         this.updateMovement();
         //Collision Handling
         this.checkCollision();
-
-        //HUD
-        me.game.HUD.setItemValue("health", this.health);
-        me.game.HUD.setItemValue("score", this.score);
-
+        
+        //For Animation ohne kein SwordAttack()
+	me.game.repaint();
 
         // update animation if necessary
         if (this.vel.x > 0) {
@@ -112,11 +112,11 @@ game.playerEntity = me.ObjectEntity.extend({
         // any update (e.g. position, animation)
         return false;
     },
-    /* -----
-     
-     KeyInput
-     
-     ------ */
+/*------------------- 
+ 
+ Key Input
+
+ -------------------------------- */
     "checkInput": function checkInput() {
         //Bewegung
         if (me.input.isKeyPressed('left')) {
@@ -150,10 +150,10 @@ game.playerEntity = me.ObjectEntity.extend({
         //weitere Eingaben
         if (me.input.isKeyPressed('action')) {
             this.actionPressed = true;
-        } else if (me.input.isKeyPressed('X')) {
+        }  else if (me.input.isKeyPressed('X')) {
             this.xPressed = true;
             this.swordAttack();
-        } else if (me.input.isKeyPressed('C')) {
+        }  else if (me.input.isKeyPressed('C')) {
             this.cPressed = true;
         }
 
@@ -196,11 +196,11 @@ game.playerEntity = me.ObjectEntity.extend({
         }
 
     },
-    /* -----
-     
-     Collision Handling
-     
-     ------ */
+/*------------------- 
+ 
+Collision Handling
+
+ -------------------------------- */
     "checkCollision": function checkCollision() {
         // check for collision
         var res = me.game.collide(this);
@@ -213,21 +213,12 @@ game.playerEntity = me.ObjectEntity.extend({
                     me.game.remove(res.obj);
                 } else {
                     this.renderable.flicker(30);
-                    this.health -= 10;
-                    //game.HUD.HealthObject.update(-10);
+                    //Update HUD Anzeige
+                    me.game.HUD.updateItemValue("health", -res.obj.power);
+                    //remove Enemy
                     me.game.remove(res.obj);
                 }
             }
         }
     },
-    /* -----
-     
-     Player Hitted
-     
-     ------ */
-    "hit": function hit(power) {
-        this.health -= power;
-    }
-
-
 });

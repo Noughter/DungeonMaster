@@ -3,15 +3,11 @@ game.npcEntity = me.ObjectEntity.extend({
         // call the constructor
         this.parent(x, y, settings);
 
-        // adjust the bounding box
-        //this.updateColRect(8, 48, -1, 0);
-
         // Physics
         this.setVelocity(3.0, 3.0);
         this.setMaxVelocity(5, 10);
         this.setFriction(0.25, 0);
-        this.gravity = 0;
-        
+        this.gravity = 0;        
         
         //Variablen
         this.collidable = true;

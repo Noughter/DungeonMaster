@@ -1,24 +1,25 @@
 var HUD = me.HUD_Item.extend({
-    init: function(x, y) {
+    "init": function(x, y) {
         this.parent(x, y);
         this.font = new me.BitmapFont("32x32_font", 32);
         context = this.context;
     },
-    draw: function(context, x, y) {
+    "draw": function(context, x, y) {
         this.font.draw(context, "SCORE: " + this.value, this.pos.x + x, this.pos.y + y);
-    }
+    },
 });
 
 var HealthObject = me.HUD_Item.extend({
-    "init": function(x, y) {
-        this.parent(x, y);
+    "init": function(health) {
+        this.parent(10, 5, health);
         this.font = new me.BitmapFont("32x32_font", 32);
     },
     "draw": function(context, x, y) {
         this.font.draw(context, "HP: " + this.value, this.pos.x + x, this.pos.y + y);
     },
-    "request_update": function request_update() {
-        return this.updated || items.containers.updated;
+    "update": function update(value) {
+        this.value += value;
+        return true;
     },
 });
 

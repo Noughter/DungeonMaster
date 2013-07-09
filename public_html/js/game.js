@@ -8,7 +8,11 @@
  */
 
 
-/* Game namespace */
+/*------------------- 
+ 
+Game Namespaces
+
+ -------------------------------- */
 var game = {
     // Whether a dialog box is waiting for input.
     "modal": false,
@@ -41,6 +45,11 @@ var game = {
         // Initialize melonJS and display a loading screen.
         me.state.change(me.state.LOADING);
     },
+/*------------------- 
+ 
+Load Ressources
+
+ -------------------------------- */            
     "loadResources": function loadResources() {
         // Set all resources to be loaded.
         var resources = [];
@@ -114,13 +123,18 @@ var game = {
         // Load the resources.
         me.loader.preload(resources);
     },
-    // Run on game resources loaded.
+/*------------------- 
+ 
+ loaded Function
+
+ -------------------------------- */
     "loaded": function() {
         me.state.set(me.state.MENU, new game.TitleScreen());
         me.state.set(me.state.PLAY, new game.PlayScreen());
 
         //Player Entity
         me.entityPool.add("mainPlayer", game.playerEntity);
+        
         //NPC Entities
         //First Room
         me.entityPool.add("Princess", game.npcCharacter.Princess);
@@ -128,7 +142,7 @@ var game = {
         
         //Forest Layout
         //Rnd Enemy onLevelLoaded
-        //me.entityPool.add("EnemyEntity", this.changeEnemy()); ----> unnötig
+        //me.entityPool.add("EnemyEntity", this.changeEnemy());
         me.game.onLevelLoaded = (function() {
             me.entityPool.add("EnemyEntity", this.changeEnemy());
         }).bind(this);
@@ -136,13 +150,6 @@ var game = {
         //me.entityPool.add("Ghost", game.npcCharacter.Dummy);
         //var ghost = me.entityPool.newInstanceOf("Ghost", x, y, settings);
         //me.game.add(ghost);
-
-        // add a default HUD to the game mngr (with no background)
-        me.game.addHUD(0, 0, 800, 600);
-        // add the "score" HUD item
-        me.game.HUD.addItem("score", new HUD(5, 20));
-        // add the "health" HUD item
-        me.game.HUD.addItem("health", new HealthObject(5, 60));
 
         // enable the keyboard
         me.input.bindKey(me.input.KEY.LEFT, "left");
@@ -160,13 +167,16 @@ var game = {
         // Start the game.
         me.state.change(me.state.PLAY);
     },
-    //Rnd Enemys call onLevelLoaded       
+/*------------------- 
+ 
+ rnd Enemys
+
+ -------------------------------- */      
     "changeEnemy": function changeEnemy() {
         var enemyArray = [
             game.npcCharacter.Eyeball,
             game.npcCharacter.Ghost
-        ];
-        console.warn(this.actualEnemy);
+        ];        
         return enemyArray[Math.floor(Math.random() * enemyArray.length)];        
     }
 };
